@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.log
+
+# source copy of the resume (the site serves public/Joshua_Wong_Resume.pdf)
+/Joshua_Wong___Resume.pdf
