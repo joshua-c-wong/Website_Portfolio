@@ -1,17 +1,21 @@
-import { motion } from "framer-motion";
-import SectionLabel from "./SectionLabel";
-import { sectionReveal } from "./motion";
+import Section from "./Section";
 import { about } from "@/data/content";
 
 const About = () => (
-  <motion.section id="about" className="py-12 border-t border-border" {...sectionReveal}>
-    <SectionLabel>About</SectionLabel>
-    {about.paragraphs.map((p, i) => (
-      <p key={i} className={`${i > 0 ? "mt-4 " : ""}text-foreground font-body leading-relaxed`}>
-        {p}
-      </p>
-    ))}
-  </motion.section>
+  <Section id="about" number="01" label="About">
+    <div className="max-w-3xl space-y-6">
+      {about.paragraphs.map((p, i) => (
+        <p
+          key={i}
+          className={`text-2xl md:text-3xl font-medium tracking-tight leading-snug ${
+            i === 0 ? "text-foreground" : "text-muted-foreground"
+          }`}
+        >
+          {p}
+        </p>
+      ))}
+    </div>
+  </Section>
 );
 
 export default About;

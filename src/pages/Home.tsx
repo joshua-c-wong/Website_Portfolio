@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import SiteHeader from "@/components/SiteHeader";
+import Container from "@/components/Container";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Experience from "@/components/Experience";
@@ -18,14 +20,17 @@ const Home = () => {
   }, [hash]);
 
   return (
-    <main className="max-w-2xl mx-auto px-6 py-16">
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Footer />
-    </main>
+    <>
+      <SiteHeader />
+      <Container as="main">
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Footer />
+      </Container>
+    </>
   );
 };
 

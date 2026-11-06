@@ -1,55 +1,58 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import SectionLabel from "./SectionLabel";
-import CompanyLogo from "./CompanyLogo";
-import { hoverNudge, listContainer, listItem, sectionReveal } from "./motion";
+import Section from "./Section";
+import { hoverNudge, listContainer, listItem } from "./motion";
 import { experience } from "@/data/content";
 
 const Experience = () => (
-  <motion.section id="experience" className="py-12 border-t border-border" {...sectionReveal}>
-    <SectionLabel className="mb-8">Experience</SectionLabel>
+  <Section id="experience" number="02" label="Experience">
     <motion.div
-      className="divide-y divide-border"
+      className="border-t border-border divide-y divide-border"
       variants={listContainer(0.1)}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-40px" }}
     >
       {experience.map((e) => (
+        <motion.div key={e.company} variants={listItem}>
         <motion.a
-          key={e.company}
           href={e.url}
           target="_blank"
           rel="noopener noreferrer"
-          variants={listItem}
-          {...hoverNudge}
           className="group block"
+          {...hoverNudge}
         >
-          <div className="py-8 px-2 -mx-2 rounded-sm">
-            <div className="flex justify-between items-start gap-6">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-xl md:text-2xl font-heading font-bold tracking-tight text-foreground group-hover:text-primary transition-colors duration-200">
-                    {e.company}
-                  </h3>
-                  <ArrowUpRight className="w-4 h-4 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
-                </div>
-                <p className="text-sm text-muted-foreground font-body italic mt-1">
-                  {e.role}
-                  {e.team && ` · ${e.team}`}
-                </p>
-                <p className="text-sm text-foreground font-body mt-2 leading-relaxed">{e.description}</p>
+          <div className="grid grid-cols-[1fr_auto] md:grid-cols-12 gap-x-6 gap-y-2 py-7 items-center">
+            <div className="md:col-span-5">
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-xl font-heading font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors duration-200">
+                  {e.company}
+                </h3>
+                <ArrowUpRight className="w-4 h-4 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
               </div>
-              <div className="flex flex-col items-end gap-2 shrink-0">
-                <span className="text-xs font-mono text-muted-foreground whitespace-nowrap">{e.period}</span>
-                <CompanyLogo src={e.logo} alt={e.company} className={e.logoClassName} />
-              </div>
+              <p className="mt-1 text-sm italic text-muted-foreground">
+                {e.role}
+                {e.team && ` · ${e.team}`}
+              </p>
+            </div>
+            <p className="col-span-2 row-start-2 md:row-start-auto md:col-span-4 text-sm text-foreground">
+              {e.description}
+            </p>
+            <div className="row-start-1 col-start-2 md:row-start-auto md:col-start-auto md:col-span-3 flex items-center justify-end gap-4">
+              <span className="text-xs font-mono text-muted-foreground whitespace-nowrap">{e.period}</span>
+              <img
+                src={e.logo}
+                alt={e.company}
+                loading="lazy"
+                className={`w-11 h-11 object-contain grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 ${e.logoClassName ?? ""}`}
+              />
             </div>
           </div>
         </motion.a>
+        </motion.div>
       ))}
     </motion.div>
-  </motion.section>
+  </Section>
 );
 
 export default Experience;

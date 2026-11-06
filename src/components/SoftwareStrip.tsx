@@ -2,23 +2,23 @@ import { motion } from "framer-motion";
 import { listContainer, listItem } from "./motion";
 import { software } from "@/data/content";
 
+/** Software icons with captions; greyscale until hovered. */
 const SoftwareStrip = () => (
   <motion.ul
-    className="flex flex-wrap items-center gap-5"
+    className="grid grid-cols-3 sm:grid-cols-6 gap-6"
     variants={listContainer(0.06)}
     initial="hidden"
     whileInView="show"
     viewport={{ once: true, margin: "-40px" }}
   >
     {software.map((s) => (
-      <motion.li key={s.name} variants={listItem} className="group relative">
+      <motion.li key={s.name} variants={listItem} className="group flex flex-col items-start gap-3">
         <img
           src={s.icon}
-          alt={s.name}
-          title={s.name}
-          className="h-8 w-8 object-contain grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-0.5"
+          alt=""
+          className="h-10 w-10 object-contain grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-0.5"
         />
-        <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-[11px] font-mono text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <span className="text-xs font-mono text-muted-foreground group-hover:text-foreground transition-colors">
           {s.name}
         </span>
       </motion.li>
