@@ -7,6 +7,7 @@ import ProjectHoverPreview from "./ProjectHoverPreview";
 import { hoverNudge, listContainer, listItem, sectionReveal } from "./motion";
 import { projects } from "@/data/content";
 import { useMediaQuery } from "@/lib/useMediaQuery";
+import { publicUrl } from "@/lib/utils";
 
 const MotionLink = motion.create(Link);
 
@@ -36,7 +37,8 @@ const Projects = () => {
         onMouseLeave={() => setPreview(null)}
       >
         {projects.map((p) => {
-          const image = p.thumbnail ?? p.images[0] ?? null;
+          const src = p.thumbnail ?? p.images[0];
+          const image = src ? publicUrl(src) : null;
           return (
             <MotionLink
               key={p.slug}

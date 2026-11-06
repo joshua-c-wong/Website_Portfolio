@@ -6,6 +6,7 @@ import SectionLabel from "@/components/SectionLabel";
 import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
 import { projects } from "@/data/content";
+import { publicUrl } from "@/lib/utils";
 import NotFound from "./NotFound";
 
 // three.js is only downloaded on pages that actually show a model
@@ -90,10 +91,10 @@ const ProjectPage = () => {
               </div>
             }
           >
-            <ModelViewer url={project.model} />
+            <ModelViewer url={publicUrl(project.model)} />
           </Suspense>
         ) : (
-          <Gallery images={project.images} title={project.name} />
+          <Gallery images={project.images.map(publicUrl)} title={project.name} />
         )}
       </motion.section>
 

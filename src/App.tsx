@@ -20,7 +20,8 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <MotionConfig reducedMotion="user">
-    <BrowserRouter>
+    {/* basename = "/" locally, "/Website_Portfolio/" on GitHub Pages */}
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AnimatedRoutes />
     </BrowserRouter>
   </MotionConfig>

@@ -36,12 +36,18 @@ Supported 3D formats: **`.glb` / `.gltf`** (recommended, keeps materials), **`.s
 
 Exporting from Revit: a common route is Revit → FBX → Blender → **glTF Binary (.glb)**. Keep files under about 20 MB so they load quickly.
 
-## Pushing to Lovable
+## Deployment (GitHub Pages)
 
-1. Create a new GitHub repo and push this folder to it:
-   ```sh
-   git add . && git commit -m "Initial portfolio"
-   git remote add origin https://github.com/<you>/<repo>.git
-   git push -u origin main
-   ```
-2. In Lovable, connect your GitHub account and import or sync the repo.
+Live site: **https://joshua-c-wong.github.io/Website_Portfolio/**
+
+Every push to `main` rebuilds and redeploys the site automatically via `.github/workflows/deploy.yml`. Progress shows in the repo's **Actions** tab, and it takes about 1–2 minutes.
+
+```sh
+git add . && git commit -m "Update portfolio" && git push
+```
+
+The Pages build runs with `GITHUB_PAGES=true`, which serves the site from `/Website_Portfolio/`. Locally and in Lovable the site still runs from `/`, so nothing needs to change there. When linking to files in `public/` from code, use the `publicUrl()` helper in `src/lib/utils.ts`. Paths written in `content.ts` are handled automatically.
+
+## Lovable
+
+The project uses Lovable's standard stack. To edit it in Lovable, connect your GitHub account there and choose this repo.

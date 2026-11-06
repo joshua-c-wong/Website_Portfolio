@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { profile } from "@/data/content";
 import { useMediaQuery } from "@/lib/useMediaQuery";
+import { publicUrl } from "@/lib/utils";
 
 // three.js only loads on large screens without reduced-motion
 const HeroWireframe = lazy(() => import("./HeroWireframe"));
@@ -61,7 +62,7 @@ const Hero = () => {
         {profile.links.map((l) => (
           <a
             key={l.label}
-            href={l.href}
+            href={publicUrl(l.href)}
             {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             className="underline underline-offset-4 decoration-border hover:text-primary hover:decoration-primary transition-colors duration-200"
           >
