@@ -7,7 +7,7 @@ const About = () => (
       {about.paragraphs.map((p, i) => (
         <p
           key={i}
-          className={`text-2xl md:text-3xl font-medium tracking-tight leading-snug ${
+          className={`text-lg sm:text-xl md:text-2xl font-medium tracking-tight leading-normal ${
             i === 0 ? "text-foreground" : "text-muted-foreground"
           }`}
         >

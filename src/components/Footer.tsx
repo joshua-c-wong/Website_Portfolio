@@ -3,7 +3,7 @@ import { publicUrl } from "@/lib/utils";
 
 const Footer = () => (
   <footer className="border-t border-border">
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-4 py-10 text-xs text-muted-foreground">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-2 md:items-center py-10 text-xs text-muted-foreground">
       <p className="md:col-span-3">
         © {new Date().getFullYear()} {profile.name}
         {footer.tagline && ` · ${footer.tagline}`}
@@ -14,7 +14,7 @@ const Footer = () => (
             key={l.label}
             href={publicUrl(l.href)}
             {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="hover:text-primary transition-colors"
+            className="py-2 hover:text-primary transition-colors"
           >
             {l.label}
           </a>
@@ -22,7 +22,7 @@ const Footer = () => (
       </div>
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="md:col-span-3 text-left md:text-right font-mono hover:text-primary transition-colors"
+        className="md:col-span-3 py-2 text-left md:text-right font-mono hover:text-primary transition-colors"
       >
         Back to top ↑
       </button>

@@ -64,12 +64,12 @@ const ProjectPage = () => {
             <div className="md:sticky md:top-24 space-y-10">
               <Link
                 to={{ pathname: "/", hash: "#projects" }}
-                className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="group -my-2 inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
                 Back
               </Link>
-              <dl className="grid grid-cols-3 md:grid-cols-1 gap-6 text-sm">
+              <dl className="grid grid-cols-3 md:grid-cols-1 gap-4 md:gap-6 text-sm">
                 <div>
                   <dt className="text-xs font-mono uppercase tracking-[0.15em] text-muted-foreground">Project</dt>
                   <dd className="mt-1 font-mono text-primary">
@@ -94,7 +94,7 @@ const ProjectPage = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="text-4xl md:text-6xl font-heading font-bold tracking-[-0.03em] leading-[0.95] text-foreground"
+              className="text-[2.5rem] sm:text-5xl md:text-6xl font-heading font-bold tracking-[-0.03em] leading-[0.95] text-foreground"
             >
               {project.name}
             </motion.h1>

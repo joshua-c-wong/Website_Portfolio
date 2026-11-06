@@ -3,9 +3,9 @@ import { useLocation } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import Container from "@/components/Container";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
+import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Footer from "@/components/Footer";
 

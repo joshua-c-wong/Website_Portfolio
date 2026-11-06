@@ -61,6 +61,15 @@ const Lightbox = ({ images, index, onClose, onIndexChange, title }: Props) => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
+            // swipe left/right on touch screens to change image
+            drag={count > 1 ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.5}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -60) step(1);
+              else if (info.offset.x > 60) step(-1);
+            }}
+            style={{ touchAction: "pan-y" }}
           />
 
           <button

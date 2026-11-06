@@ -36,7 +36,12 @@
     overflow-x: clip;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%; /* stop iOS enlarging text in landscape */
+  }
+
   body {
+    -webkit-tap-highlight-color: transparent;
     @apply bg-background text-foreground font-body antialiased;
     font-feature-settings: "cv11", "ss01"; /* Inter: single-storey a, open digits */
   }
@@ -47,10 +52,14 @@
 }
 
 @layer utilities {
-  /* Hero column guides fade out toward the top and bottom */
-  .hero-columns {
-    mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent);
+  /* Very faint square grid behind the hero, fading out toward the edges */
+  .hero-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.045) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 70% 60% at 35% 50%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 35% 50%, #000 20%, transparent 75%);
   }
 
   /* Accent underline that grows from the left on hover */

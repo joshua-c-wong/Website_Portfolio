@@ -24,17 +24,17 @@ const SiteHeader = () => {
       <Container className="flex h-14 items-center justify-between">
         <Link
           to="/"
-          className="text-xs font-mono uppercase tracking-[0.2em] text-foreground hover:text-primary transition-colors"
+          className="whitespace-nowrap py-3 text-[11px] sm:text-xs font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-foreground hover:text-primary transition-colors"
         >
           {profile.name}
         </Link>
-        <nav aria-label="Links" className="flex items-center gap-5 text-sm text-muted-foreground">
+        <nav aria-label="Links" className="flex items-center gap-4 sm:gap-5 text-[13px] sm:text-sm text-muted-foreground">
           {profile.links.map((l) => (
             <a
               key={l.label}
               href={publicUrl(l.href)}
               {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="hover:text-primary transition-colors duration-200"
+              className="py-3 hover:text-primary transition-colors duration-200"
             >
               {l.label}
             </a>

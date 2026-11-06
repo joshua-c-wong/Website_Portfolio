@@ -18,65 +18,72 @@ const boxEdges = (w: number, h: number, d: number, x = 0, y = 0, z = 0) => {
   return g;
 };
 
-/** Horizontal floor-plate outlines stacked inside a box volume. */
-const floorPlates = (w: number, d: number, x: number, z: number, y0: number, y1: number, step: number) => {
-  const pts: number[] = [];
-  const hw = w / 2;
-  const hd = d / 2;
-  for (let y = y0 + step; y < y1 - 0.01; y += step) {
-    const c = [
-      [x - hw, z - hd],
-      [x + hw, z - hd],
-      [x + hw, z + hd],
-      [x - hw, z + hd],
-    ];
-    for (let i = 0; i < 4; i++) {
-      const a = c[i];
-      const b = c[(i + 1) % 4];
-      pts.push(a[0], y, a[1], b[0], y, b[1]);
-    }
-  }
+/** Build a line-segment geometry from a flat list of [x,y,z, x,y,z, ...] pairs. */
+const segments = (pts: number[]) => {
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
   return g;
 };
 
-/** Vertical lines (columns) from y0 to y1 at the given x/z points. */
-const columns = (points: [number, number][], y0: number, y1: number) => {
+type Volume = { w: number; h: number; d: number; x: number; y0: number; z: number };
+
+/** Thin vertical window mullions on the front (+z) and right (+x) faces of a volume. */
+const mullions = (v: Volume, spacing: number) => {
   const pts: number[] = [];
-  points.forEach(([x, z]) => pts.push(x, y0, z, x, y1, z));
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
-  return g;
+  const y1 = v.y0 + v.h;
+  const [x0, x1] = [v.x - v.w / 2, v.x + v.w / 2];
+  const [z0, z1] = [v.z - v.d / 2, v.z + v.d / 2];
+  for (let x = x0 + spacing; x < x1 - 0.01; x += spacing) pts.push(x, v.y0, z1, x, y1, z1);
+  for (let z = z0 + spacing; z < z1 - 0.01; z += spacing) pts.push(x1, v.y0, z, x1, y1, z);
+  return segments(pts);
+};
+
+/** Low-poly tree: a trunk line plus an icosahedron crown, standing on (x, base, z). */
+const tree = (x: number, z: number, size = 1, base = 0) => {
+  const trunk = 0.55 * size;
+  const r = 0.52 * size;
+  const crown = new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(r, 0));
+  crown.translate(x, base + trunk + r * 0.9, z);
+  return [segments([x, base, z, x, base + trunk + 0.05, z]), crown];
+};
+
+/** Simple modern building: three offset stacked volumes with a glazed base, a site outline and trees. */
+const buildScene = () => {
+  const base: Volume = { w: 5, h: 1.5, d: 3.4, x: -0.4, y0: 0, z: 0 };
+  const mid: Volume = { w: 4.4, h: 1.3, d: 2.8, x: 1.1, y0: 1.5, z: -0.2 }; // cantilevers to the right
+  const top: Volume = { w: 3, h: 1.3, d: 2.4, x: -0.9, y0: 2.8, z: 0.2 };
+  const vol = (v: Volume) => boxEdges(v.w, v.h, v.d, v.x, v.y0 + v.h / 2, v.z);
+
+  // site outline + a path to the entrance
+  const site = segments([
+    -4.6, 0, -3, 4.6, 0, -3,
+    4.6, 0, -3, 4.6, 0, 3,
+    4.6, 0, 3, -4.6, 0, 3,
+    -4.6, 0, 3, -4.6, 0, -3,
+    -0.9, 0, 1.7, -0.9, 0, 3,
+    0.1, 0, 1.7, 0.1, 0, 3,
+  ]);
+
+  const trees = [
+    ...tree(-3.7, 2.1, 1.1),
+    ...tree(-3.4, -1.9, 0.9),
+    ...tree(3.6, 2.2, 1),
+    ...tree(2.6, 2.5, 0.75),
+    ...tree(2.4, -0.4, 0.6, mid.y0 + mid.h), // small tree on the roof terrace above the cantilever
+  ];
+
+  return {
+    ink: [vol(base), vol(top), mullions(base, 0.5), mullions(top, 0.5)],
+    accent: [vol(mid), mullions(mid, 0.55)],
+    soft: [site, ...trees],
+  };
 };
 
 const Building = ({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: number }> }) => {
   const spin = useRef<THREE.Group>(null);
   const tilt = useRef<THREE.Group>(null);
 
-  const { ink, accent } = useMemo(() => {
-    // podium
-    const podium = boxEdges(6, 1.2, 4.2, 0, 0.6, 0);
-    // tower, offset to the back-left, with floor plates
-    const tower = boxEdges(2.6, 5.4, 2.6, -1.3, 1.2 + 2.7, -0.4);
-    const towerFloors = floorPlates(2.6, 2.6, -1.3, -0.4, 1.2, 6.6, 0.6);
-    const podiumFloor = floorPlates(6, 4.2, 0, 0, 0, 1.2, 0.6);
-    // columns under the cantilever, down to the ground
-    const cols = columns(
-      [
-        [3.3, -0.8],
-        [3.3, 0.8],
-      ],
-      0,
-      3.4,
-    );
-    // cantilevered volume (accent), slotted through the tower
-    const cantilever = boxEdges(4.6, 1.0, 2.0, 1.4, 3.9, 0);
-    return {
-      ink: [podium, tower, towerFloors, podiumFloor, cols],
-      accent: [cantilever],
-    };
-  }, []);
+  const { ink, accent, soft } = useMemo(buildScene, []);
 
   const inkMat = useMemo(
     () => new THREE.LineBasicMaterial({ color: INK, transparent: true, opacity: 0.32 }),
@@ -84,6 +91,11 @@ const Building = ({ pointer }: { pointer: React.MutableRefObject<{ x: number; y:
   );
   const accentMat = useMemo(
     () => new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.85 }),
+    [],
+  );
+  // lighter lines for the site outline and trees
+  const softMat = useMemo(
+    () => new THREE.LineBasicMaterial({ color: INK, transparent: true, opacity: 0.2 }),
     [],
   );
 
@@ -100,12 +112,16 @@ const Building = ({ pointer }: { pointer: React.MutableRefObject<{ x: number; y:
 
   return (
     <group ref={tilt}>
-      <group ref={spin} position={[0, -3.3, 0]}>
+      {/* scaled so the whole site (radius ~5 units) stays inside the camera frame while tilting */}
+      <group ref={spin} position={[0, -1.55, 0]} scale={0.95}>
         {ink.map((g, i) => (
           <lineSegments key={`i${i}`} geometry={g} material={inkMat} />
         ))}
         {accent.map((g, i) => (
           <lineSegments key={`a${i}`} geometry={g} material={accentMat} />
+        ))}
+        {soft.map((g, i) => (
+          <lineSegments key={`s${i}`} geometry={g} material={softMat} />
         ))}
       </group>
     </group>

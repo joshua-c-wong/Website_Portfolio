@@ -31,12 +31,11 @@ const Hero = () => {
       initial="hidden"
       animate="show"
     >
-      {/* Swiss layout guide: 12 faint column lines matching the page grid */}
-      <div aria-hidden className="hero-columns pointer-events-none absolute inset-0 -z-10 hidden md:grid grid-cols-12 gap-x-8">
-        {Array.from({ length: 12 }, (_, i) => (
-          <div key={i} className={`border-l border-foreground/[0.05] ${i === 11 ? "border-r" : ""}`} />
-        ))}
-      </div>
+      {/* faint square grid, full viewport width, behind the content */}
+      <div
+        aria-hidden
+        className="hero-grid pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2"
+      />
 
       <div className="grid flex-1 grid-cols-1 md:grid-cols-12 gap-x-8 items-center py-20 md:py-16">
         <div className="md:col-span-7 lg:col-span-6">
@@ -45,13 +44,13 @@ const Hero = () => {
           </motion.p>
           <motion.h1
             variants={item}
-            className="mt-6 text-6xl sm:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.04em] leading-[0.9] text-foreground"
+            className="mt-5 sm:mt-6 text-[3.5rem] sm:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.04em] leading-[0.9] text-foreground"
           >
             {firstName}
             <br />
             {lastName}
           </motion.h1>
-          <motion.p variants={item} className="mt-8 max-w-sm text-lg text-muted-foreground">
+          <motion.p variants={item} className="mt-6 sm:mt-8 max-w-sm text-base sm:text-lg text-muted-foreground">
             {profile.tagline}
           </motion.p>
         </div>
@@ -76,7 +75,7 @@ const Hero = () => {
       {/* meta row */}
       <motion.div
         variants={item}
-        className="grid grid-cols-2 md:grid-cols-12 gap-x-8 border-t border-border py-5 text-xs font-mono text-muted-foreground"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-1 border-t border-border py-5 text-xs font-mono text-muted-foreground"
       >
         <p className="md:col-span-3">Based in {profile.location}</p>
         <p className="md:col-span-6">Studying at BCIT</p>
