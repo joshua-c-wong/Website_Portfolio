@@ -7,12 +7,20 @@ import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
 import { projects } from "@/data/content";
 import { publicUrl } from "@/lib/utils";
+import { hasWebGL } from "@/lib/webgl";
+import SilentBoundary from "@/components/SilentBoundary";
 import NotFound from "./NotFound";
 
 // three.js is only downloaded on pages that actually show a model
 const ModelViewer = lazy(() => import("@/components/ModelViewer"));
 
 type Tab = "images" | "model";
+
+const NoWebGL = () => (
+  <div className="aspect-[4/3] rounded-sm border border-border bg-muted/60 flex items-center justify-center px-6 text-center text-xs font-mono text-muted-foreground">
+    The 3D viewer needs WebGL, which is turned off in this browser.
+  </div>
+);
 
 const ProjectPage = () => {
   const { slug } = useParams();
@@ -91,7 +99,13 @@ const ProjectPage = () => {
               </div>
             }
           >
-            <ModelViewer url={publicUrl(project.model)} />
+            {hasWebGL() ? (
+              <SilentBoundary fallback={<NoWebGL />}>
+                <ModelViewer url={publicUrl(project.model)} />
+              </SilentBoundary>
+            ) : (
+              <NoWebGL />
+            )}
           </Suspense>
         ) : (
           <Gallery images={project.images.map(publicUrl)} title={project.name} />

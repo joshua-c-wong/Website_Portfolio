@@ -1,9 +1,11 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { profile } from "@/data/content";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { publicUrl } from "@/lib/utils";
+import { hasWebGL } from "@/lib/webgl";
+import SilentBoundary from "./SilentBoundary";
 
 // three.js only loads on large screens without reduced-motion
 const HeroWireframe = lazy(() => import("./HeroWireframe"));
@@ -17,7 +19,9 @@ const item: Variants = {
 const Hero = () => {
   const { scrollY } = useScroll();
   const chevronOpacity = useTransform(scrollY, [0, 100], [0.6, 0]);
-  const showWireframe = useMediaQuery("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+  const wideEnough = useMediaQuery("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+  const [webgl] = useState(hasWebGL);
+  const showWireframe = wideEnough && webgl;
 
   return (
     <motion.section
@@ -40,9 +44,11 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
         >
-          <Suspense fallback={null}>
-            <HeroWireframe />
-          </Suspense>
+          <SilentBoundary>
+            <Suspense fallback={null}>
+              <HeroWireframe />
+            </Suspense>
+          </SilentBoundary>
         </motion.div>
       )}
 
