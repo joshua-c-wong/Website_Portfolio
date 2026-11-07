@@ -22,7 +22,7 @@ const ProjectRow = ({ project, number, onMouseEnter, onMouseLeave }: Props) => (
     onMouseLeave={onMouseLeave}
     {...hoverNudge}
   >
-    <div className="grid grid-cols-[2rem_1fr] md:grid-cols-[3.5rem_1fr_auto_5rem] gap-x-3 md:gap-x-6 py-6 md:py-7 items-baseline">
+    <div className="grid grid-cols-[2rem_1fr] md:grid-cols-[3.5rem_1fr_auto_5rem] gap-x-3 md:gap-x-6 py-7 items-baseline">
       <span className="text-sm font-mono text-muted-foreground group-hover:text-primary transition-colors duration-200">
         {number}
       </span>

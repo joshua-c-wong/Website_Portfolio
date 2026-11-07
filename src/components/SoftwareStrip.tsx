@@ -5,7 +5,7 @@ import { software } from "@/data/content";
 /** Software icons with captions; greyscale until hovered. */
 const SoftwareStrip = () => (
   <motion.ul
-    className="grid grid-cols-3 sm:grid-cols-6 gap-6"
+    className="grid grid-cols-3 sm:grid-cols-6 gap-x-6 gap-y-8 sm:gap-6"
     variants={listContainer(0.06)}
     initial="hidden"
     whileInView="show"

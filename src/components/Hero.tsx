@@ -26,7 +26,7 @@ const Hero = () => {
 
   return (
     <motion.section
-      className="relative flex md:min-h-[calc(100svh-3.5rem)] flex-col"
+      className="relative flex min-h-[calc(100svh-3.5rem-1px)] md:min-h-[calc(100svh-3.5rem)] flex-col"
       variants={container}
       initial="hidden"
       animate="show"
@@ -37,7 +37,7 @@ const Hero = () => {
         className="hero-grid pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2"
       />
 
-      <div className="grid flex-1 grid-cols-1 md:grid-cols-12 gap-x-8 items-center py-20 md:py-16">
+      <div className="grid flex-1 grid-cols-1 md:grid-cols-12 gap-x-8 items-center py-12 md:py-16">
         <div className="md:col-span-7 lg:col-span-6">
           <motion.p variants={item} className="text-xs font-mono uppercase tracking-[0.2em] text-primary">
             Portfolio · {profile.location}
@@ -75,14 +75,15 @@ const Hero = () => {
       {/* meta row */}
       <motion.div
         variants={item}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-1 border-t border-border py-5 text-xs font-mono text-muted-foreground"
+        className="grid grid-cols-[1fr_auto] md:grid-cols-12 gap-x-8 gap-y-1 border-t border-border py-5 text-xs font-mono text-muted-foreground"
       >
-        <p className="md:col-span-3">Based in {profile.location}</p>
-        <p className="md:col-span-6">Studying at BCIT</p>
+        {/* phones: the two facts stack on the left, Scroll sits on the right (as on desktop) */}
+        <p className="col-start-1 md:col-start-auto md:col-span-3">Based in {profile.location}</p>
+        <p className="col-start-1 md:col-start-auto md:col-span-6">Studying at BCIT</p>
         <button
           onClick={scrollDown}
           data-og-hide
-          className="hidden md:block md:col-span-3 text-right hover:text-primary transition-colors"
+          className="col-start-2 row-start-1 row-span-2 self-center -my-3 py-3 md:my-0 md:py-0 md:self-auto md:col-start-auto md:row-start-auto md:row-span-1 md:col-span-3 text-right hover:text-primary transition-colors"
         >
           Scroll ↓
         </button>

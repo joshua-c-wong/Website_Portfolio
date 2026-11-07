@@ -22,9 +22,9 @@ const Experience = () => (
             className="group block"
             {...hoverNudge}
           >
-            {/* phones: company + logo on top, then description, then date.
+            {/* phones: company + role with date and logo on the right, then description.
                 desktop (12-col): company | description | date + logo */}
-            <div className="grid grid-cols-[1fr_auto] md:grid-cols-12 gap-x-4 md:gap-x-6 gap-y-2 py-6 md:py-7 items-center">
+            <div className="grid grid-cols-[1fr_auto] md:grid-cols-12 gap-x-4 md:gap-x-6 gap-y-3 py-7 items-center">
               <div className="md:col-span-5 md:order-1">
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-lg md:text-xl font-heading font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors duration-200">
@@ -37,8 +37,8 @@ const Experience = () => (
                   {e.team && ` · ${e.team}`}
                 </p>
               </div>
-              <div className="md:col-span-3 md:order-3 flex items-center justify-end gap-4">
-                <span className="hidden md:inline text-xs font-mono text-muted-foreground whitespace-nowrap">
+              <div className="md:col-span-3 md:order-3 flex flex-col items-end gap-2 md:flex-row md:items-center md:justify-end md:gap-4">
+                <span className="text-xs font-mono text-muted-foreground whitespace-nowrap">
                   {e.period}
                 </span>
                 <img
@@ -49,7 +49,6 @@ const Experience = () => (
                 />
               </div>
               <p className="col-span-2 md:col-span-4 md:order-2 text-sm text-foreground">{e.description}</p>
-              <p className="col-span-2 md:hidden text-xs font-mono text-muted-foreground">{e.period}</p>
             </div>
           </motion.a>
         </motion.div>
